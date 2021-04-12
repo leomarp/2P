@@ -1,0 +1,52 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+mainClassName = 'Main'
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    //logs
+    compile "org.slf4j:slf4j-simple:1.8.0-beta4"
+    //Javalin dependency
+    compile 'io.javalin:javalin:3.9.0'
+    //Thymeleaf dependency
+    compile 'org.thymeleaf:thymeleaf:3.0.5.RELEASE'
+    //Procesamiento JSON para Javalin.
+    compile "com.fasterxml.jackson.core:jackson-databind:2.10.1"
+    //ORM - Hibernate.
+    compile 'org.hibernate:hibernate-core:5.4.17.Final'
+    compile 'org.hibernate:hibernate-entitymanager:5.4.17.Final'
+    //Driver de la conexión en h2...
+    compile 'com.h2database:h2:1.4.197'
+    //Libreria para JWT
+    implementation 'io.jsonwebtoken:jjwt-api:0.10.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.10.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.10.5'
+    //JSON manipulation
+    implementation 'com.google.code.gson:gson:2.8.6'
+    //libreria para SOAP de Jetty https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-http-spi
+    compile group: 'org.eclipse.jetty', name: 'jetty-http-spi', version: '9.4.30.v20200611'
+    //incluyendo las librerias de javax.ee en java 11.
+    //https://blog.codefx.org/java/java-11-migration-guide/
+    compile "org.glassfish.jaxb:jaxb-runtime:2.4.0-b180830.0438"
+    compile "com.sun.xml.ws:jaxws-rt:2.3.1"
+    compile "com.sun.xml.ws:rt:2.3.1"
+    compile "com.konghq:unirest-java:3.8.06:standalone"
+}
+
+
+shadowJar{
+    baseName = 'app'
+    classifier = ''
+    archiveVersion = ''
+}

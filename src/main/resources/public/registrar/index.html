@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>PARCIAL2</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="../registrar/images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../registrar/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../registrar/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../registrar/fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../registrar/vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="../registrar/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../registrar/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../registrar/vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="../registrar/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../registrar/css/util.css">
+	<link rel="stylesheet" type="text/css" href="../registrar/css/main.css">
+<!--===============================================================================================-->
+	<script>
+
+		function readCookie(name) {
+			var nameEQ = name + "=";
+			var ca = document.cookie.split(';');
+			for(var i=0;i < ca.length;i++) {
+				var c = ca[i];
+				while (c.charAt(0)==' ') c = c.substring(1,c.length);
+				if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+			}
+			return null;
+		}
+
+		function verify() {
+
+			if (readCookie("loggedUser") === null || readCookie("loggedRole") === null) {
+				location.replace("/login");
+			}
+
+		}
+
+	</script>
+
+	<script>
+		verify();
+	</script>
+</head>
+<body>
+	
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100 p-t-85 p-b-20">
+				<form class="login100-form validate-form" action="/registrar" method="post">
+					<span class="login100-form-title p-b-70">
+						Registrar Usuarios
+					</span>
+					<span class="login100-form-avatar">
+						<img src="../login/images/avatar-01.png" alt="AVATAR">
+					</span>
+					<div class = "error">
+						<span th:text="${msg}"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-t-85 m-b-35" data-validate = "Entre un nombre">
+						<input class="input100" type="text" name="name">
+						<span class="focus-input100" data-placeholder="Nombre"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input  m-b-35" data-validate = "Entre un usuario">
+						<input class="input100" type="text" name="username">
+						<span class="focus-input100" data-placeholder="Usuario"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input m-b-50" data-validate="Ingrese una contrasena">
+						<input class="input100" type="password" name="pass">
+						<span class="focus-input100" data-placeholder="Contrasena"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input  m-b-35" data-validate = "Entre un usuario">
+						<input type="radio" id="admin" name="rol" value="administrador">
+						<label class="radio-label" for="admin" style="font-size: 18px;margin-left: 3px;margin-right: 15px; color: #999999;"><strong>Administrador</strong></label>
+						<input  type="radio" id="voluntario" name="rol" value="voluntario">
+						<label class="radio-label" for="voluntario" style=" font-size: 18px;margin-left: 3px; margin-right: 15px; color: #999999;"><strong>Voluntario</strong></label>
+					</div>
+
+
+
+
+
+
+						<div class = "container-login100-form-btn">
+							<button class="btn btn--radius-2 btn--red" type="submit">Registrar</button>
+						</div>
+
+					<br>
+
+					<p style="margin-left:6.5em"><a href="/form/index.html">Volver a pagina principal</a></p>
+
+				</form>
+			</div>
+		</div>
+	</div>
+	
+
+	<div id="dropDownSelect1"></div>
+	
+<!--===============================================================================================-->
+	<script src="../registrar/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="../registrar/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="../registrar/vendor/bootstrap/js/popper.js"></script>
+	<script src="../registrar/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="../registrar/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="../registrar/vendor/daterangepicker/moment.min.js"></script>
+	<script src="../registrar/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="../registrar/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="../registrar/js/main.js"></script>
+
+</body>
+</html>
