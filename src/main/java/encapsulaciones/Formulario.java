@@ -23,7 +23,7 @@ public class Formulario implements Serializable
     @OneToOne(fetch = FetchType.EAGER)
     private Foto foto;
 
-    public Formulario(){}
+    public Formulario(String nombre, String provincia, String nivelacad, Usuario usuario){}
 
     public Formulario(String nombre, String sector, String nivelEscolar, Usuario usuario, Foto foto) {
         this.nombre = nombre;

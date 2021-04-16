@@ -17,7 +17,7 @@ import org.eclipse.jetty.http.spi.JettyHttpServer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import services.*;
-import soap.FormWebServices;
+//import soap.FormWebServices;
 
 import javax.crypto.SecretKey;
 import javax.persistence.EntityManager;
@@ -169,13 +169,13 @@ public class Main {
                 String provincia = dws.getProvincia();
                 String nivelacad = dws.getNivelacad();
                 String usuario = dws.getUsuario();
-                String foto = dws.getFoto();
+               // String foto = dws.getFoto();
 
-                Foto FOTO = new Foto(nombre, foto.substring(5, 15), foto.substring(23));
-                FotoServices.getInstancia().crear(FOTO);
+               /* Foto FOTO = new Foto(nombre, foto.substring(5, 15), foto.substring(23));
+                FotoServices.getInstancia().crear(FOTO); */
 
                 Usuario Usuario = UsuarioServices.getInstancia().find(usuario);
-                Formulario form = new Formulario(nombre,provincia,nivelacad,Usuario, FOTO);
+                Formulario form = new Formulario(nombre,provincia,nivelacad,Usuario);
                 FormularioServices.getInstancia().crear(form);
 
                 Ubicacion ubicacion = new Ubicacion(longitud,latitud,form);
