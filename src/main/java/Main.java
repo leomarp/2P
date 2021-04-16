@@ -48,7 +48,7 @@ public class Main {
 
         /**
          * SOAP API CONFIG BEFORE STARTING SERVER
-         */
+
 
         Server server = app.server().server();
         ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection();
@@ -65,7 +65,7 @@ public class Main {
             // Para acceder al wsdl en http://localhost:8000/ws/EstudianteWebServices?wsdl
         }catch (Exception ex){
             ex.printStackTrace();
-        }
+        }*/
 
 
         //JAVALIN INIT ON PORT 8000
@@ -269,7 +269,7 @@ public class Main {
 
         /**
          * API REST
-         */
+         *
 
         app.routes(() ->{
 
@@ -405,7 +405,7 @@ public class Main {
 
             });
 
-        });
+        });*/
 
     }
 
