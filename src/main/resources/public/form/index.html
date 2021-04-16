@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en" manifest="sinconexion.appcache">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Colorlib Templates">
+    <meta name="author" content="Colorlib">
+    <meta name="keywords" content="Colorlib Templates">
+
+    <!-- Title Page-->
+    <title>PARCIAL2</title>
+
+    <!-- Icons font CSS-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+    <link href="../form/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="../form/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+
+    <!-- Vendor CSS-->
+    <link href="../form/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="../form/vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="../form/css/main.css" rel="stylesheet" media="all">
+
+    <script type="text/javascript" src="../form/js/jquery-3.2.1.min.js"></script>
+
+    <!-- WEB CAM SCRIPT -->
+    <script type="text/javascript" src="../form/webcam-easy.js"></script>
+
+
+
+    <!-- Geoloaction -->
+    <script>
+        var id, cantidad = 0;
+        //Indica las opciones para llamar al GPS.
+        var opcionesGPS = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+        }
+
+        function getlocation(){
+
+            navigator.geolocation.getCurrentPosition(function(geodata){
+                var coordenadas = geodata.coords;
+
+                var element = document.getElementById("longitud");
+                element.value = coordenadas.longitude;
+                element = document.getElementById("latitud");
+                element.value = coordenadas.latitude;
+
+                $("#posicionGps").text("Latitud: "+coordenadas.latitude+", Longitud: "+coordenadas.longitude+", Precisión: "+coordenadas.accuracy+" metros");
+            }, function(){
+                $("#posicionGps").text("No permite el acceso del API GEO");
+            }, opcionesGPS);
+
+        };
+    </script>
+
+    <!-- FORMS CRUD -->
+    <script>
+
+        function  formCRUD(){
+            var localStorageKeyName = 'forms';
+
+            cargarLocalStorage();
+
+            $("#submit").click(function () {
+                var longitud = document.getElementById("longitud"),
+                    latitud = document.getElementById("latitud"),
+                    nombre = document.getElementById("first_name"),
+                    apellido = document.getElementById("last_name"),
+                    provincia = document.getElementById("subject"),
+                    nivelAcad = document.getElementById("nivelacad"),
+                    usuario = localStorage.getItem("loggedUser");
+
+                // Validar
+                if (nombre.value.length === 0 || apellido.value.length === 0 || provincia.value === 'Elegir'|| nivelAcad.value === 'Elegir') return;
+
+                var formulario = {
+                    longitud: longitud.value,
+                    latitud: latitud.value,
+                    nombre: nombre.value,
+                    apellido: apellido.value,
+                    provincia: provincia.value,
+                    nivelacad: nivelAcad.value,
+                    usuario: usuario,
+                                    };
+
+                // Clean data
+                nombre.value = '';
+                apellido.value = '';
+
+                // Append to my localStorage
+                agregarLocalStorage(formulario);
+            })
+
+            function agregarLocalStorage(obj) {
+                var forms = [],
+                    dataInLocalStorage = localStorage.getItem(localStorageKeyName);
+
+                if (dataInLocalStorage !== null) {
+                    forms = JSON.parse(dataInLocalStorage);
+                }
+
+                forms.push(obj);
+
+                localStorage.setItem(localStorageKeyName, JSON.stringify(forms));
+
+                cargarLocalStorage();
+            }
+
+            function cargarLocalStorage() {
+                var forms = [],
+                    dataInLocalStorage = localStorage.getItem(localStorageKeyName),
+                    gridBody = document.querySelector("#grid tbody");
+
+                if (dataInLocalStorage !== null) {
+                    forms = JSON.parse(dataInLocalStorage);
+                }
+
+                // Draw TR from TBODY
+                gridBody.innerHTML = '';
+
+                forms.forEach(function (x, i) {
+                    var tr = document.createElement("tr"),
+                        tdNombre = document.createElement("td"),
+                        tdApellido = document.createElement("td"),
+                        tdProvincia = document.createElement("td"),
+                        tdNivel = document.createElement("td"),
+                        tdRemove = document.createElement("td"),
+                        btnRemove = document.createElement("button");
+
+                    tdNombre.innerHTML = x.nombre;
+                    tdApellido.innerHTML = x.apellido;
+                    tdProvincia.innerHTML = x.provincia;
+                    tdNivel.innerHTML = x.nivelacad;
+
+
+                    btnRemove.textContent = 'Remover';
+                    btnRemove.className = 'btn btn--red';
+                    btnRemove.addEventListener('click', function(){
+                        removerLocalStorage(i);
+                    });
+
+                    tdRemove.appendChild(btnRemove);
+
+                    tr.appendChild(tdNombre);
+                    tr.appendChild(tdApellido);
+                    tr.appendChild(tdProvincia);
+                    tr.appendChild(tdNivel);
+                    tr.appendChild(tdRemove);
+
+                    gridBody.appendChild(tr);
+                });
+            }
+
+            function removerLocalStorage(index){
+                var forms = [],
+                    dataInLocalStorage = localStorage.getItem(localStorageKeyName);
+
+                forms = JSON.parse(dataInLocalStorage);
+
+                forms.splice(index, 1);
+
+                localStorage.setItem(localStorageKeyName, JSON.stringify(forms));
+
+                cargarLocalStorage();
+            }
+        }
+
+    </script>
+
+    <!--Connectivity Check -->
+    <script>
+        function checkcon() {
+            setInterval(function () {
+                var ifConnected = window.navigator.onLine;
+                if (ifConnected) {
+                    document.getElementById("checkOnline").innerHTML = "Online";
+                    document.getElementById("checkOnline").style.color = "green";
+                    document.getElementById("sync").style.visibility = 'visible';
+                    document.getElementById("dropdown").style.visibility = 'visible';
+                } else {
+                    document.getElementById("checkOnline").innerHTML = "Offline";
+                    document.getElementById("checkOnline").style.color = "red";
+                    document.getElementById("sync").style.visibility = 'hidden';
+                    document.getElementById("dropdown").style.visibility = 'hidden';
+                }
+            }, 3000);
+        }
+    </script>
+
+    <!-- Data Sync -->
+    <script>
+        function sync(){
+
+            let webSocket;
+
+            try{
+
+                webSocket = new WebSocket("wss://" + location.hostname + ":" + location.port + "/sincronizarForms");
+                webSocket.onopen  = function(e){ console.log("Conectado - status "+this.readyState); };
+                webSocket.onclose = function(e) {
+                    console.log("Desconectado - status " + this.readyState);
+                }
+
+                var forms = [],
+                    dataInLocalStorage = localStorage.getItem("forms");
+
+                if (dataInLocalStorage !== null || dataInLocalStorage === "") {
+                    //var worker = new Worker('../form/js/webworker.js');
+                    //worker.postMessage({'cmd': 'sincronizar', 'stg': dataInLocalStorage});
+
+                    forms = JSON.parse(dataInLocalStorage);
+                    forms.forEach(myFunction);
+
+                    function sendMessage(msg){
+                        // Wait until the state of the socket is not ready and send the message when it is...
+                        waitForSocketConnection(webSocket, function(){
+                            console.log("message sent!!!");
+                            webSocket.send(msg);
+                        });
+                    }
+
+                    // Make the function wait until the connection is made...
+                    function waitForSocketConnection(socket, callback){
+                        setTimeout(
+                            function () {
+                                if (socket.readyState === 1) {
+                                    console.log("Connection is made")
+                                    if (callback != null){
+                                        callback();
+                                    }
+                                } else {
+                                    console.log("wait for connection...")
+                                    waitForSocketConnection(socket, callback);
+                                }
+
+                            }, 5); // wait 5 milisecond for the connection...
+                    }
+
+                    function myFunction(item, index, arr) {
+                        sendMessage(JSON.stringify(item));
+                    }
+
+                }else{
+                    console.log("Nada que sincronizar . . .");
+                }
+
+            }catch(err){
+                console.log(err);
+
+            }
+
+            localStorage.removeItem("forms");
+            formCRUD();
+            alert("Sincronizado con exito!");
+
+            setTimeout(function () {
+                webSocket.close();
+            },5000);
+
+
+        }
+
+    </script>
+
+    <!--INIT-->
+    <script>
+
+        function readCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0;i < ca.length;i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return null;
+        }
+
+        function init() {
+
+            if(readCookie("loggedUser") === null || readCookie("loggedRole") === null){
+                location.replace("/login");
+            }
+
+            localStorage.setItem("loggedUser",readCookie("loggedUser"));
+            localStorage.setItem("loggedRole",readCookie("loggedRole"));
+
+            if(localStorage.getItem("loggedRole") !== "administrador"){
+                document.getElementById("ddusuario").style.visibility = 'hidden';
+                document.getElementById("ddregistros").style.visibility = 'hidden';
+                document.getElementById("ddformularios").style.visibility = 'hidden';
+            }
+            getlocation();
+            formCRUD();
+            checkcon();
+
+            $("#actualizarG").click(function(){
+                getlocation();
+            });
+
+            $("#sync").click(function(){
+                sync();
+            });
+
+            var canvasElement = document.getElementById('canvas');
+
+        };
+
+    </script>
+
+    <!--Drop Down-->
+    <script>
+    function myFunctionDrop() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    // Close the dropdown menu if the user clicks outside of it
+    window.onclick = function(event) {
+      if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+    }
+    }
+    </script>
+
+</head>
+
+<body onload="init()">
+    <div class="page-wrapper bg-gra-03 p-t-45 p-b-50">
+        <div class="wrapper wrapper--w790">
+            <div class="card card-5">
+                <div class="card-heading">
+                    <h2 class="title">ENCUESTAS</h2>
+                    <div class="dropdown" id="dropdown">
+                        <button onclick="myFunctionDrop()" class="dropbtn" style="color:white;"><i class="material-icons md-48">menu</i></button>
+                        <div id="myDropdown" class="dropdown-content">
+                            <a href="/login">Iniciar Sesion</a>
+                            <a href="/mapas" id="ddregistros">Ver ubicacion de registros</a>
+                            <a href="/registrar" id="ddusuario">Nuevo usuario</a>
+                            <a href="/sincronizados" id="ddformularios">Ver formularios sincronizados</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                   <!-- <form method="post" action=""> -->
+                        <div class="form-row m-b-55">
+                            <div class="name">Ubicacion</div>
+                            <div class="value">
+                                <div class="row row-space">
+                                    <div class="col-2">
+                                        <div class="input-group-desc">
+                                            <input class="input--style-5" type="text" name="longitud" id="longitud" readonly>
+                                            <label class="label--desc">Longitud</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="input-group-desc">
+                                            <input class="input--style-5" type="text" name="latitud" id="latitud" readonly >
+                                            <label class="label--desc">Latitud</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    <div class="btn-div">
+                        <button class="btn btn--radius-2 btn--red" id="actualizarG">Actualizar</button>
+                    </div>
+
+
+                        <div class="form-row m-b-55">
+                            <div class="name">Nombre del encuestado</div>
+                            <div class="value">
+                                <div class="row row-space">
+                                    <div class="col-2">
+                                        <div class="input-group-desc">
+                                            <input class="input--style-5" type="text" name="first_name" id="first_name">
+                                            <label class="label--desc">Nombre</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="input-group-desc">
+                                            <input class="input--style-5" type="text" name="last_name" id="last_name">
+                                            <label class="label--desc">Apellido</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                       <!-- lista de productos, en el select -->
+                        <div class="form-row">
+                            <div class="name">Provincia</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <div class="rs-select2 js-select-simple select2-search">
+                                        <select name="subject" id="subject">
+                                            <option disabled="disabled" selected="selected">Elegir</option>
+                                            <option>Duarte</option>
+                                            <option>Dajabón</option>
+                                            <option>Espaillat</option>
+                                            <option>La Vega</option>
+                                            <option>María Trinidad Sánchez </option>
+                                            <option>Monseñor Nouel </option>
+                                            <option>Montecristi </option>
+                                            <option>Puerto Plata </option>
+                                            <option>Salcedo </option>
+                                            <option>Samaná </option>
+                                            <option>Sánchez Ramírez </option>
+                                            <option>Santiago de los Caballeros </option>
+                                            <option>Santiago Rodríguez </option>
+                                            <option>Valverde</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="name">Nivel academico</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <div class="rs-select2 js-select-simple select2-search">
+                                        <select name="nivelacad" id="nivelacad">
+                                            <option disabled="disabled" selected="selected">Elegir</option>
+                                            <option>Basico</option>
+                                            <option>Medio</option>
+                                            <option>Grado Universitaro</option>
+                                            <option>Postgrado</option>
+                                            <option>Doctorado</option>
+
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row" style="border: solid 1px; padding: 10px;">
+
+
+
+                                <br>
+                                <canvas id="canvas" class="form-row"></canvas>
+                            </div>
+                            <audio id="snapSound" src="../form/snap.wav" preload = "auto"></audio>
+
+                        </div>
+
+
+                        <div class="btn-div">
+                            <button class="btn btn--radius-2 btn--red" id="submit">Enviar</button>
+                        </div>
+                   <!-- --> </form>
+                </div>
+            </div>
+            <br>
+            <!-- 2nd Card -->
+            <div class="card card-5">
+                <style>
+                    table {
+                    border-collapse: collapse;
+                    width: 100%;
+                    margin-bottom: 10px;
+                    }
+
+                    th, td {
+                    text-align: left;
+                    padding: 8px;
+                    }
+
+                    tr:nth-child(even) {background-color: #f2f2f2;}
+                </style>
+
+                <div class="card-heading">
+                    <a><h2 class="title">Formularios guardados</h2></a>
+                </div>
+                <div class="card-body">
+
+                    <table id="grid" class="tabl">
+
+                        <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Provincia</th>
+                            <th>Nivel Acad.</th>
+                            <th style="width:80px;">
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <div class="btn-div">
+                    <button class="btn btn--radius-2 btn--red" id="sync">Sincronizar</button>
+                    <p id="checkOnline"></p>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+    <!-- Jquery JS-->
+    <script src="../form/vendor/jquery/jquery.min.js"></script>
+    <!-- Vendor JS-->
+    <script src="../form/vendor/select2/select2.min.js"></script>
+    <script src="../form/vendor/datepicker/moment.min.js"></script>
+    <script src="../form/vendor/datepicker/daterangepicker.js"></script>
+
+    <!-- Main JS-->
+    <script src="../form/js/global.js"></script>
+
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+
+</html>
+<!-- end document-->
