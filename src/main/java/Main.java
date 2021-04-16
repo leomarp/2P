@@ -152,59 +152,50 @@ public class Main {
         app.ws("/sincronizarForms", ws -> {
 
             ws.onConnect(ctx -> {
-                System.out.println("Conexión Iniciada - "+ctx.getSessionId());
+                System.out.println("Conexión Iniciada - " + ctx.getSessionId());
             });
 
             ws.onMessage(ctx -> {
-                System.out.println("Mensaje Recibido de "+ctx.getSessionId()+" ====== ");
-                System.out.println("Mensaje: "+ctx.message());
+                System.out.println("Mensaje Recibido de " + ctx.getSessionId() + " ====== ");
+                System.out.println("Mensaje: " + ctx.message());
                 System.out.println("================================");
 
                 Gson g = new Gson();
                 DataWS dws = g.fromJson(ctx.message(), DataWS.class);
 
-                String nombre = dws.getNombre()+" "+dws.getApellido();
+                String nombre = dws.getNombre() + " " + dws.getApellido();
                 String latitud = dws.getLatitud();
                 String longitud = dws.getLongitud();
                 String provincia = dws.getProvincia();
                 String nivelacad = dws.getNivelacad();
                 String usuario = dws.getUsuario();
-               // String foto = dws.getFoto();
 
-               /* Foto FOTO = new Foto(nombre, foto.substring(5, 15), foto.substring(23));
-                FotoServices.getInstancia().crear(FOTO); */
 
                 Usuario Usuario = UsuarioServices.getInstancia().find(usuario);
-                Formulario form = new Formulario(nombre,provincia,nivelacad,Usuario);
+                Formulario form = new Formulario(nombre, provincia, nivelacad, Usuario);
                 FormularioServices.getInstancia().crear(form);
 
-                Ubicacion ubicacion = new Ubicacion(longitud,latitud,form);
+                Ubicacion ubicacion = new Ubicacion(longitud, latitud, form);
                 UbicacionServices.getInstancia().crear(ubicacion);
 
 
             });
 
             ws.onBinaryMessage(ctx -> {
-                System.out.println("Mensaje Recibido Binario "+ctx.getSessionId()+" ====== ");
-                System.out.println("Mensaje: "+ctx.data().length);
+                System.out.println("Mensaje Recibido Binario " + ctx.getSessionId() + " ====== ");
+                System.out.println("Mensaje: " + ctx.data().length);
                 System.out.println("================================");
             });
 
             ws.onClose(ctx -> {
-                System.out.println("Conexión Cerrada - "+ctx.getSessionId());
+                System.out.println("Conexión Cerrada - " + ctx.getSessionId());
             });
 
             ws.onError(ctx -> {
                 System.out.println(ctx.error());
                 System.out.println("Ocurrió un error en el WS");
             });
-        });
-
-        /**
-         * MAPS ENDPOINT
-         */
-
-        app.get("/mapas", ctx -> {
+        }).get("/mapas", ctx -> {
             Map<String, Object> modelo = new HashMap<>();
 
             List<Ubicacion> ubicaciones = UbicacionServices.getInstancia().findAll();
@@ -216,6 +207,10 @@ public class Main {
 
             ctx.render("public/mapas/index.html", modelo);
         });
+
+        /**
+         * MAPS ENDPOINT
+         */
 
         /**
          * NEW USERS

@@ -19,19 +19,19 @@ public class Formulario implements Serializable
     @OneToOne(fetch = FetchType.EAGER)
     private Usuario usuario;
 
-    @Lob
-    @OneToOne(fetch = FetchType.EAGER)
-    private Foto foto;
 
-    public Formulario(String nombre, String provincia, String nivelacad, Usuario usuario){}
 
-    public Formulario(String nombre, String sector, String nivelEscolar, Usuario usuario, Foto foto) {
+
+
+    public Formulario(String nombre, String sector, String nivelEscolar, Usuario usuario) {
         this.nombre = nombre;
         this.sector = sector;
         this.nivelEscolar = nivelEscolar;
         this.usuario = usuario;
-        this.foto = foto;
+
     }
+
+
 
     public String getNombre() {
         return nombre;
@@ -65,13 +65,6 @@ public class Formulario implements Serializable
         this.usuario = usuario;
     }
 
-    public Foto getFoto() {
-        return foto;
-    }
-
-    public void setFoto(Foto foto) {
-        this.foto = foto;
-    }
 
     public int getId() {
         return id;
