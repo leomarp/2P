@@ -30,38 +30,10 @@
     <script type="text/javascript" src="../form/js/jquery-3.2.1.min.js"></script>
 
     <!-- WEB CAM SCRIPT -->
-    <!--
     <script type="text/javascript" src="../form/webcam-easy.js"></script>
 
-    <script>
-
-        var picture;
-
-        function camStart(webcam) {
-            webcam.start()
-                .then(result =>{
-                    console.log("webcam started");
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        }
-
-        function camStop(webcam) {
-            webcam.stop();
-        }
-
-        function camSnap(webcam) {
-            picture = webcam.snap();
-        }
-
-        function getPicture() {
-            return picture;
-        }
 
 
-    </script>
--->
     <!-- Geoloaction -->
     <script>
         var id, cantidad = 0;
@@ -118,8 +90,7 @@
                     provincia: provincia.value,
                     nivelacad: nivelAcad.value,
                     usuario: usuario,
-                    foto: getPicture()
-                };
+                                    };
 
                 // Clean data
                 nombre.value = '';
@@ -340,23 +311,7 @@
                 sync();
             });
 
-            var webcamElement = document.getElementById('webcam');
             var canvasElement = document.getElementById('canvas');
-            var snapSoundElement = document.getElementById('snapSound');
-            var webcam = new Webcam(webcamElement, 'enviroment', canvasElement, snapSoundElement);
-            console.log("webcam created");
-
-            $("#camStart").click(function(){
-                camStart(webcam);
-            });
-
-            $("#camStop").click(function(){
-                camStop(webcam);
-            });
-
-            $("#camSnap").click(function(){
-                camSnap(webcam, canvas);
-            });
 
         };
 
@@ -498,32 +453,16 @@
                             </div>
                         </div>
 
-                     <!--   <div class="form-row" style="border: solid 1px; padding: 10px;">
+                        <div class="form-row" style="border: solid 1px; padding: 10px;">
 
-                            <div class="nav-title">
-                                <h4><strong>Vista previa</strong></h4>
-                            </div>
 
-                            <div class="div_todo">
-                                <div class="div_preview">
-                                    <video style="alignment: left;" id="webcam" autoplay playsinline width="320" height="240"></video>
-                                </div>
-
-                                <div class="botones ">
-                                    <button class="btn btn--radius-2 btn--red" id="camSnap">Snap</button>
-                                    <button class="btn btn--radius-2 btn--red" id="camStart">ON</button>
-                                    <button class="btn btn--radius-2 btn--red" id="camStop">OFF</button>
-                                </div>
-                            </div>
-                            <h4><strong>Foto Adjunta:</strong></h4>
-                            <div class="foto-adjunta" >
 
                                 <br>
                                 <canvas id="canvas" class="form-row"></canvas>
                             </div>
                             <audio id="snapSound" src="../form/snap.wav" preload = "auto"></audio>
 
-                        </div>-->
+                        </div>
 
 
                         <div class="btn-div">
@@ -533,7 +472,7 @@
                 </div>
             </div>
             <br>
-            <!-- 2nd Card-->
+            <!-- 2nd Card -->
             <div class="card card-5">
                 <style>
                     table {
